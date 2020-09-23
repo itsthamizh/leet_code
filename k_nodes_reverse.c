@@ -1,10 +1,8 @@
-/*this problem for k values are modified to reverse order
 
-example for:
-    input :1 2 3 4 5
-    input k value: 3
-
-    output:3 2 1 4 5 
+/*This program for given singly linked lists are ordered by reverse
+ 
+input:1 2 3 4 5 6 
+output:6 5 4 3 2 1
 
 */
 
@@ -17,27 +15,25 @@ struct ListNode{
     struct ListNode* next;
 };
 
-struct ListNode* creation(struct ListNode*, int);
+struct ListNode* creation(struct ListNode*, int); 
 void display(struct ListNode*);
 struct ListNode* reverse(struct ListNode*,int);
 
 void main(){
     struct ListNode* head;
-    
+
     head=creation(head,1);
     creation(head,2);
     creation(head,3);
-    creation(head,4); 
+    creation(head,4);
     creation(head,5);
 
     display(head);
 
     head=reverse(head,2);
-    printf("\n");
+    printf("\n \n");
     display(head);
 }
-
-
 struct ListNode* creation(struct ListNode* head, int data){
      if(head==NULL){
         struct ListNode* temp;
@@ -72,37 +68,27 @@ void display(struct ListNode* head){
 
 struct ListNode* reverse(struct ListNode* head, int k){
     struct ListNode* prev;
-    struct ListNode* curr;
-    struct ListNode* temp_prev;
-
-    if(k==0 || head==NULL ){
-        return head;
-    }
-    if(k!=0 || head!=NULL){
-
+    struct ListNode* cur;
+    
+    if(head!=NULL){
         prev=head;
         head=head->next;
-        curr=head;
-
+        cur=head;
+    
         prev->next=NULL;
-
-        while(head->val != k+1 ){
-            head=head->next;
-            curr->next=prev;
-            prev=curr;
-            curr=head;
-            if(head==NULL){
-                break;
+            while(k!=NULL){
+                k--;
+                head=head->next;
+                cur->next=prev;
+                prev=cur;
+                cur=head;
             }
-        }
-        temp_prev=prev;
-        while(prev->next!=NULL){
-            prev=prev->next;
-        }
-        prev->next=curr;
-        prev=temp_prev;
+            while(prev!=NULL){
+                prev=prev->next;
+            }
+        prev->next=head;
+        head=prev;
     }
-     
-    head=prev;
+
     return head;
 }

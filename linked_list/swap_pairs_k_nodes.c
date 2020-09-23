@@ -1,14 +1,13 @@
-/*this problem for k values are modified to reverse order
+/* 
+this program for k values of pairs nodes are reverse orderlt arranging
 
-example for:
-    input :1 2 3 4 5
-    input k value: 3
+example for,
+    input :1 2 3 4 5 6
+        input for k= 2
+    output:2 1 4 3 5 6
 
-    output:3 2 1 4 5 
-
+    here two pairs are changed by reverse order.
 */
-
-
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -22,18 +21,21 @@ void display(struct ListNode*);
 struct ListNode* reverse(struct ListNode*,int);
 
 void main(){
-    struct ListNode* head;
+ struct ListNode* head;
     
     head=creation(head,1);
     creation(head,2);
     creation(head,3);
-    creation(head,4); 
+    creation(head,4);
     creation(head,5);
+    //creation(head,6);
 
     display(head);
 
     head=reverse(head,2);
-    printf("\n");
+
+    printf("\n\n");
+
     display(head);
 }
 
@@ -63,6 +65,7 @@ struct ListNode* creation(struct ListNode* head, int data){
 }
 
 
+
 void display(struct ListNode* head){
     while(head!=NULL){
         printf("%d->",head->val);
@@ -70,39 +73,25 @@ void display(struct ListNode* head){
     }
 }
 
-struct ListNode* reverse(struct ListNode* head, int k){
-    struct ListNode* prev;
-    struct ListNode* curr;
-    struct ListNode* temp_prev;
 
-    if(k==0 || head==NULL ){
+struct ListNode* reverse(struct ListNode* head, int k){
+    if(head==NULL || head->next==NULL){
         return head;
     }
-    if(k!=0 || head!=NULL){
+    if(head!=NULL && k != NULL){
+        k--;
+        struct ListNode* prev;
+        struct ListNode* curr;
+        curr=head->next->next;
 
-        prev=head;
+        struct ListNode* temp;
+        temp=(struct ListNode*)malloc(sizeof(struct ListNode));
+        temp->val=head->val;
+        temp->next=NULL;
         head=head->next;
-        curr=head;
-
-        prev->next=NULL;
-
-        while(head->val != k+1 ){
-            head=head->next;
-            curr->next=prev;
-            prev=curr;
-            curr=head;
-            if(head==NULL){
-                break;
-            }
-        }
-        temp_prev=prev;
-        while(prev->next!=NULL){
-            prev=prev->next;
-        }
-        prev->next=curr;
-        prev=temp_prev;
+        head->next=temp;
+        temp->next=reverse(curr,k);
+        temp=curr;
     }
-     
-    head=prev;
     return head;
 }
