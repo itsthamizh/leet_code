@@ -1,12 +1,4 @@
 
-/*This program for given singly linked lists are ordered by reverse
- 
-input:1 2 3 4 5 6 
-output:6 5 4 3 2 1
-
-*/
-
-
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -17,23 +9,26 @@ struct ListNode{
 
 struct ListNode* creation(struct ListNode*, int); 
 void display(struct ListNode*);
-struct ListNode* reverse(struct ListNode*,int);
+struct ListNode* rotate(struct ListNode*,int);
 
 void main(){
     struct ListNode* head;
 
     head=creation(head,1);
-    creation(head,2);
-    creation(head,3);
-    creation(head,4);
-    creation(head,5);
+     creation(head,2);
+    //  creation(head,3);
+    //  creation(head,4);
+    //  creation(head,5);
 
     display(head);
 
-    head=reverse(head,2);
-    printf("\n \n");
+    head=rotate(head,2);
+
+    printf("\n");
+
     display(head);
 }
+
 struct ListNode* creation(struct ListNode* head, int data){
      if(head==NULL){
         struct ListNode* temp;
@@ -66,29 +61,34 @@ void display(struct ListNode* head){
     }
 }
 
-struct ListNode* reverse(struct ListNode* head, int k){
-    struct ListNode* prev;
-    struct ListNode* cur;
-    
-    if(head!=NULL){
-        prev=head;
-        head=head->next;
-        cur=head;
-    
-        prev->next=NULL;
-            while(k!=NULL){
-                k--;
-                head=head->next;
-                cur->next=prev;
-                prev=cur;
-                cur=head;
-            }
-            while(prev!=NULL){
-                prev=prev->next;
-            }
-        prev->next=head;
-        head=prev;
-    }
+struct ListNode* rotate(struct ListNode* head,int k){
+  while(k!=0){  
+      k--;
+    struct ListNode* temp;
+    struct ListNode* head_copy;
+    temp=(struct ListNode*)malloc(sizeof(struct ListNode));
+    head_copy=head;
 
-    return head;
+    if(head->next ==NULL){
+        return head;
+    }
+    if(head->next->next==NULL){
+        temp->val=head->val;
+        head=head->next;
+        head->next=temp;
+    } 
+    if(head->next->next!=NULL){ 
+        while(head->next->next != NULL){
+            head=head->next;
+        }
+        temp->val=head->next->val;
+        temp->next=NULL;
+        head->next=NULL;
+        //free(head);
+        head=head_copy;
+        temp->next=head;
+        head=temp;
+    }
+  }
+  return head;
 }
